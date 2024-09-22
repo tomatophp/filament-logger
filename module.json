@@ -1,0 +1,29 @@
+{
+    "name": "FilamentLogger",
+    "alias": "filament-logger",
+    "description": {
+        "ar": "Log all user activity to file or log driver and preview it on your FilamentPHP panel",
+        "en": "Log all user activity to file or log driver and preview it on your FilamentPHP panel",
+        "gr": "Log all user activity to file or log driver and preview it on your FilamentPHP panel",
+        "sp": "Log all user activity to file or log driver and preview it on your FilamentPHP panel"
+    },
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "TomatoPHP\\FilamentLogger\\FilamentLoggerServiceProvider"
+    ],
+    "files": [],
+    "title": {
+        "ar": "Filament Logger",
+        "en": "Filament Logger",
+        "gr": "Filament Logger",
+        "sp": "Filament Logger"
+    },
+    "color": "#007dff",
+    "icon": "heroicon-c-exclamation-triangle",
+    "placeholder": "placeholder.webp",
+    "type": "lib",
+    "version": "v1.0",
+    "github" : "https://github.com/tomatophp/filament-logger",
+    "docs" : "https://github.com/tomatophp/filament-logger"
+}
