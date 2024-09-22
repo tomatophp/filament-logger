@@ -2,7 +2,8 @@
 
 namespace TomatoPHP\FilamentLogger\Facades;
 
-use Pest\Mutate\Event\Facade;
+
+use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void log(string $message, string $level = 'info')
