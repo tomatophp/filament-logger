@@ -14,10 +14,10 @@
     ],
     "files": [],
     "title": {
-        "ar": "Filament Logger",
-        "en": "Filament Logger",
-        "gr": "Filament Logger",
-        "sp": "Filament Logger"
+        "ar": "User Logger",
+        "en": "User Logger",
+        "gr": "User Logger",
+        "sp": "User Logger"
     },
     "color": "#007dff",
     "icon": "heroicon-c-exclamation-triangle",
