@@ -88,10 +88,10 @@ class RequestLoggerService
             $logArray = array_merge($this->collectLog->toArray()[0], $this->collectLog->toArray()[1]);
 
 
-            $active = true;
+            $active = false;
             foreach (config('filament-logger.request.guards') as $guard){
-                if(!in_array($guard, $request->route()->middleware())){
-                    $active = false;
+                if(in_array($guard, $request->route()->middleware())){
+                    $active = true;
                 }
             }
 
