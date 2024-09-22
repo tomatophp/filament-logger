@@ -31,6 +31,33 @@ finally register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
 ->plugin(\TomatoPHP\FilamentLogger\FilamentLoggerPlugin::make())
 ```
 
+
+after install please publish the config file by using this command
+
+```bash
+php artisan vendor:publish --tag="filament-logger-config"
+```
+
+on your `filament-logger.php` config file please add the guard of user or middleware you went to track
+
+```php
+    'guards' => [
+        'web',
+        'auth:accounts'
+    ],
+```
+
+to track your panel 
+
+```php
+    'guards' => [
+        'web',
+        'panel:admin'
+    ],
+```
+
+where `admin` is the id of the panel.
+
 ## Using
 
 you can add a custom log from anywhere in your code by using this code

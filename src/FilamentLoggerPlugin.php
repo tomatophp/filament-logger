@@ -20,9 +20,6 @@ class FilamentLoggerPlugin implements Plugin
         $panel->resources([
             ActivityResource::class
         ]);
-
-        Config::set('filament-logger.request.guards', array_merge(config('filament-logger.request.guards'), ['panel:'. $panel->getId()]));
-        Artisan::call('cache:clear');
     }
 
     public function boot(Panel $panel): void
