@@ -22,7 +22,7 @@
     "color": "#007dff",
     "icon": "heroicon-c-exclamation-triangle",
     "placeholder": "https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/3x1io-tomato-logger.jpg",
-    "type": "lib",
+    "type": "plugin",
     "version": "v1.0.2",
     "github" : "https://github.com/tomatophp/filament-logger",
     "docs" : "https://github.com/tomatophp/filament-logger"
