@@ -90,7 +90,7 @@ class RequestLoggerService
 
             $active = false;
             foreach (config('filament-logger.request.guards') as $guard){
-                if(in_array($guard, $request->route()->middleware())){
+                if($request->route()?->middleware() && in_array($guard, $request->route()->middleware())){
                     $active = true;
                 }
             }
