@@ -101,6 +101,14 @@ class RequestLoggerService
                 }
             }
 
+            if(count(config('filament-logger.request.excluded-paths'))){
+                foreach (config('filament-logger.request.excluded-paths') as $path){
+                    if($request->is($path)){
+                        $active = false;
+                    }
+                }
+            }
+
             if($active){
                 if(config('filament-logger.request.database')) {
                     Activity::query()->create([
