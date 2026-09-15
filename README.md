@@ -14,6 +14,13 @@ Log all user activity to file or log driver and preview it on your FilamentPHP p
 ![View Log](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/view-log.png)
 ![Log File](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/log-file.png)
 
+## Version Compatibility
+
+| Plugin | Filament | Laravel | PHP |
+|--------|----------|---------|-----|
+| 1.x (`v3` branch) | 3.x | 10.x \| 11.x | 8.1+ |
+| 5.x | 5.x | 12.x \| 13.x | 8.2+ |
+
 ## Installation
 
 ```bash

@@ -2,8 +2,10 @@
 
 namespace TomatoPHP\FilamentLogger\Loggers;
 
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Stringable;
 
 /**
  * Class BaseRequestLogger
@@ -13,7 +15,7 @@ class RequestLogger implements LoggerInterface
     /**
      * @var \Monolog\Logger;
      */
-    protected \Monolog\Logger $monolog;
+    protected Logger $monolog;
 
     /**
      * BaseRequestLogger constructor.
@@ -42,11 +44,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log an alert message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function alert(string|\Stringable $message, array $context = []): void
+    public function alert(string|Stringable $message, array $context = []): void
     {
         $this->monolog->alert($message, $context);
     }
@@ -54,11 +54,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log a critical message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function critical(string|\Stringable $message, array $context = []): void
+    public function critical(string|Stringable $message, array $context = []): void
     {
         $this->monolog->critical($message, $context);
     }
@@ -66,11 +64,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log an error message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function error(string|\Stringable $message, array $context = []): void
+    public function error(string|Stringable $message, array $context = []): void
     {
         $this->monolog->error($message, $context);
     }
@@ -78,11 +74,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log a warning message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function warning(string|\Stringable $message, array $context = []): void
+    public function warning(string|Stringable $message, array $context = []): void
     {
         $this->monolog->warning($message, $context);
     }
@@ -90,11 +84,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log a notice to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function notice(string|\Stringable $message, array $context = []): void
+    public function notice(string|Stringable $message, array $context = []): void
     {
         $this->monolog->notice($message, $context);
     }
@@ -102,11 +94,9 @@ class RequestLogger implements LoggerInterface
     /**
      * Log an informational message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function info(string|\Stringable $message, array $context = []): void
+    public function info(string|Stringable $message, array $context = []): void
     {
         $this->monolog->info($message, $context);
     }
@@ -114,24 +104,19 @@ class RequestLogger implements LoggerInterface
     /**
      * Log a debug message to the logs.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function debug(string|\Stringable $message, array $context = []): void
+    public function debug(string|Stringable $message, array $context = []): void
     {
         $this->monolog->debug($message, $context);
     }
 
-
     /**
      * System is unusable.
      *
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $message
      */
-    public function emergency(string|\Stringable $message, array $context = []): void
+    public function emergency(string|Stringable $message, array $context = []): void
     {
         $this->monolog->emergency($message, $context);
     }
@@ -139,12 +124,10 @@ class RequestLogger implements LoggerInterface
     /**
      * Log a message to the logs.
      *
-     * @param string $level
-     * @param string $message
-     * @param array $context
-     * @return void
+     * @param  string  $level
+     * @param  string  $message
      */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         $this->monolog->log($level, $message, $context);
     }

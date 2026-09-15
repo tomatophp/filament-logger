@@ -2,10 +2,10 @@
 
 namespace TomatoPHP\FilamentLogger\Interpolations;
 
-use Illuminate\Support\Collection;
-use TomatoPHP\FilamentLogger\Contracts\InterpolationContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
+use TomatoPHP\FilamentLogger\Contracts\InterpolationContract;
 
 /**
  * Class BaseInterpolation
@@ -18,6 +18,7 @@ abstract class BaseInterpolation implements InterpolationContract
      * @var Request
      */
     protected $request;
+
     /**
      * @var Response
      */
@@ -33,17 +34,11 @@ abstract class BaseInterpolation implements InterpolationContract
         return $this->logCollection;
     }
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * @param Response $response
-     */
     public function setResponse(Response $response): void
     {
         $this->response = $response;
@@ -51,20 +46,14 @@ abstract class BaseInterpolation implements InterpolationContract
 
     /**
      * Escape string
-     *
-     * @param string $text
-     * @return string
      */
     protected function escape(string $text): string
     {
-        return preg_replace('/\s/', "\\s", $text);
+        return preg_replace('/\s/', '\\s', $text);
     }
 
     /**
      * Convert array or null to string
-     *
-     * @param $value
-     * @return string
      */
     protected function convertToString($value): string
     {
@@ -74,21 +63,18 @@ abstract class BaseInterpolation implements InterpolationContract
         if (is_null($value)) {
             $value = 'null';
         }
+
         return $value;
     }
 
-    /**
-     * @param int $bytes
-     * @return string
-     */
     protected function formatSizeUnits(int $bytes): string
     {
         if ($bytes >= 1073741824) {
-            $bytes = number_format($bytes / 1073741824, 2) . 'GB';
+            $bytes = number_format($bytes / 1073741824, 2).'GB';
         } elseif ($bytes >= 1048576) {
-            $bytes = number_format($bytes / 1048576, 2) . 'MB';
+            $bytes = number_format($bytes / 1048576, 2).'MB';
         } elseif ($bytes >= 1024) {
-            $bytes = number_format($bytes / 1024, 2) . 'KB';
+            $bytes = number_format($bytes / 1024, 2).'KB';
         } elseif ($bytes > 1) {
             $bytes .= 'B';
         } elseif ($bytes === 1) {

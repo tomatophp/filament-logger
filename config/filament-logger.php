@@ -1,5 +1,7 @@
 <?php
 
+use TomatoPHP\FilamentLogger\Handlers\RequestLoggerHandler;
+
 return [
 
     'request' => [
@@ -15,7 +17,7 @@ return [
          */
 
         'handlers' => [
-            TomatoPHP\FilamentLogger\Handlers\RequestLoggerHandler::class
+            RequestLoggerHandler::class,
         ],
 
         /*
@@ -75,13 +77,12 @@ return [
 
         'benchmark' => 'application',
 
-
         /*
          * Log selected Guards
          */
 
         'guards' => [
-            'web'
+            'web',
         ],
 
         /*

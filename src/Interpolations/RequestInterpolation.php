@@ -3,7 +3,6 @@
 namespace TomatoPHP\FilamentLogger\Interpolations;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -11,11 +10,6 @@ use Illuminate\Support\Str;
  */
 class RequestInterpolation extends BaseInterpolation
 {
-
-    /**
-     * @param string $text
-     * @return string
-     */
     public function interpolate(string $text): string
     {
         $variables = explode(' ', $text);
@@ -28,14 +22,10 @@ class RequestInterpolation extends BaseInterpolation
                 $text = str_replace($matches[0], $value, $text);
             }
         }
+
         return $text;
     }
 
-    /**
-     * @param string $raw
-     * @param string $variable
-     * @return string
-     */
     protected function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
@@ -75,7 +65,7 @@ class RequestInterpolation extends BaseInterpolation
             'HTTP_ACCEPT_LANGUAGE',
             'HTTP_HOST',
             'HTTP_REFERER',
-            'HTTP_USER_AGENT'
+            'HTTP_USER_AGENT',
         ], strtoupper(str_replace('-', '_', $variable)));
 
         if (method_exists($this, $method)) {
@@ -106,8 +96,9 @@ class RequestInterpolation extends BaseInterpolation
                     $formats = [
                         'clf' => Carbon::now()->format('d/M/Y:H:i:s O'),
                         'iso' => Carbon::now()->toIso8601String(),
-                        'web' => Carbon::now()->toRfc1123String()
+                        'web' => Carbon::now()->toRfc1123String(),
                     ];
+
                     return $formats[$option] ?? Carbon::now()->format($option);
                 case 'req':
                 case 'header':
@@ -118,25 +109,24 @@ class RequestInterpolation extends BaseInterpolation
                     return $raw;
             }
         }
+
         return $raw;
     }
 
-    /**
-     * @return string
-     */
     protected function getQuery(): string
     {
         $query = $this->request->query();
         $queryString = '[';
         foreach ($query as $key => $value) {
             if (is_array($value)) {
-                $queryString .= $key . '=>[],';
+                $queryString .= $key.'=>[],';
             } else {
-                $queryString .= $key . '=>' . $value . ',';
+                $queryString .= $key.'=>'.$value.',';
             }
         }
         $queryString = trim($queryString, ',');
         $queryString .= ']';
+
         return $queryString;
     }
 
@@ -145,7 +135,7 @@ class RequestInterpolation extends BaseInterpolation
      */
     protected function getUser(): ?string
     {
-        if (!is_null($this->request->user()) && !is_null($this->request->user()->email)) {
+        if (! is_null($this->request->user()) && ! is_null($this->request->user()->email)) {
             return $this->request->user()->email;
         } else {
             return null;

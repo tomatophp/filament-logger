@@ -2,13 +2,13 @@
 
 namespace TomatoPHP\FilamentLogger\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 use TomatoPHP\FilamentLogger\Interpolations\RequestInterpolation;
 use TomatoPHP\FilamentLogger\Interpolations\ResponseInterpolation;
 use TomatoPHP\FilamentLogger\Loggers\RequestLogger;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Arr;
 use TomatoPHP\FilamentLogger\Models\Activity;
 
 /**
@@ -17,40 +17,26 @@ use TomatoPHP\FilamentLogger\Models\Activity;
 class RequestLoggerService
 {
     protected Collection $collectLog;
-    /**
-     *
-     */
+
     protected const LOG_CONTEXT = 'RESPONSE';
-    /**
-     * @var array
-     */
+
     protected array $formats = [
         'full' => '{request-hash} | HTTP/{http-version} {status} | {remote-addr} | {user} | {method} {url} {query} | {response-time} s | {user-agent} | {referer}',
         'combined' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length} "{referer}" "{user-agent}"',
         'common' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length}',
         'dev' => '{method} {url} {status} {response-time} s - {content-length}',
         'short' => '{remote-addr} {remote-user} {method} {url} HTTP/{http-version} {status} {content-length} - {response-time} s',
-        'tiny' => '{method} {url} {status} {content-length} - {response-time} s'
+        'tiny' => '{method} {url} {status} {content-length} - {response-time} s',
     ];
-    /**
-     * @var RequestInterpolation
-     */
+
     protected RequestInterpolation $requestInterpolation;
-    /**
-     * @var ResponseInterpolation
-     */
+
     protected ResponseInterpolation $responseInterpolation;
-    /**
-     * @var RequestLogger
-     */
+
     protected RequestLogger $logger;
 
     /**
      * RequestLoggerService constructor.
-     *
-     * @param RequestLogger $logger
-     * @param RequestInterpolation $requestInterpolation
-     * @param ResponseInterpolation $responseInterpolation
      */
     public function __construct(
         RequestLogger $logger,
@@ -63,10 +49,6 @@ class RequestLoggerService
         $this->collectLog = collect([]);
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     */
     public function log(Request $request, Response $response): void
     {
         $this->requestInterpolation->setRequest($request);
@@ -87,30 +69,27 @@ class RequestLoggerService
 
             $logArray = array_merge($this->collectLog->toArray()[0], $this->collectLog->toArray()[1]);
 
-
             $active = false;
-            foreach (config('filament-logger.request.guards') as $guard){
-                if($request->route()?->middleware() && in_array($guard, $request->route()->middleware())){
+            foreach (config('filament-logger.request.guards') as $guard) {
+                if ($request->route()?->middleware() && in_array($guard, $request->route()->middleware())) {
                     $active = true;
                 }
             }
 
-            if(!config('filament-logger.request.livewire')){
-                if($request->is('livewire/*')){
-                    $active = false;
-                }
+            if (! config('filament-logger.request.livewire') && $this->isLivewireRequest($request)) {
+                $active = false;
             }
 
-            if(count(config('filament-logger.request.excluded-paths'))){
-                foreach (config('filament-logger.request.excluded-paths') as $path){
-                    if($request->is($path)){
+            if (count(config('filament-logger.request.excluded-paths'))) {
+                foreach (config('filament-logger.request.excluded-paths') as $path) {
+                    if ($request->is($path)) {
                         $active = false;
                     }
                 }
             }
 
-            if($active){
-                if(config('filament-logger.request.database')) {
+            if ($active) {
+                if (config('filament-logger.request.database')) {
                     Activity::query()->create([
                         'model_id' => $request->user() ? $request->user()->id : null,
                         'model_type' => $request->user() ? get_class($request->user()) : null,
@@ -128,12 +107,23 @@ class RequestLoggerService
                     ]);
                 }
 
-                if(config('filament-logger.request.log_file')){
+                if (config('filament-logger.request.log_file')) {
                     $this->logger->log(config('filament-logger.request.level', 'info'), $message, [
-                        static::LOG_CONTEXT
+                        static::LOG_CONTEXT,
                     ]);
                 }
             }
         }
+    }
+
+    /**
+     * Livewire 4 posts component updates to "/livewire-{hash}/update" with an "X-Livewire" header,
+     * Livewire 3 used "/livewire/update".
+     */
+    protected function isLivewireRequest(Request $request): bool
+    {
+        return $request->hasHeader('X-Livewire')
+            || $request->is('livewire/*')
+            || $request->is('livewire-*/*');
     }
 }

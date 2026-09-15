@@ -3,6 +3,7 @@
 namespace TomatoPHP\FilamentLogger;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use TomatoPHP\FilamentLogger\Listeners\RequestLoggerListener;
 
 /**
  * Class EventServiceProvider
@@ -24,6 +25,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        \TomatoPHP\FilamentLogger\Listeners\RequestLoggerListener::class,
+        RequestLoggerListener::class,
     ];
 }

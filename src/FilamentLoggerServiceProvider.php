@@ -3,49 +3,47 @@
 namespace TomatoPHP\FilamentLogger;
 
 use Illuminate\Support\ServiceProvider;
-use TomatoPHP\FilamentLogger\EventServiceProvider;
+use TomatoPHP\FilamentLogger\Console\FilamentLoggerInstall;
 use TomatoPHP\FilamentLogger\Services\Benchmark;
-
+use TomatoPHP\FilamentLogger\Services\LoggerServices;
 
 class FilamentLoggerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //Register generate command
+        // Register generate command
         $this->commands([
-           \TomatoPHP\FilamentLogger\Console\FilamentLoggerInstall::class,
+            FilamentLoggerInstall::class,
         ]);
 
-        //Register Config file
+        // Register Config file
         $this->mergeConfigFrom(__DIR__.'/../config/filament-logger.php', 'filament-logger');
 
-        //Publish Config
+        // Publish Config
         $this->publishes([
-           __DIR__.'/../config/filament-logger.php' => config_path('filament-logger.php'),
+            __DIR__.'/../config/filament-logger.php' => config_path('filament-logger.php'),
         ], 'filament-logger-config');
 
-        //Register Migrations
+        // Register Migrations
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        //Publish Migrations
+        // Publish Migrations
         $this->publishes([
-           __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'filament-logger-migrations');
 
-
-        //Register Langs
+        // Register Langs
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'filament-logger');
 
-        //Publish Lang
+        // Publish Lang
         $this->publishes([
-           __DIR__.'/../resources/lang' => base_path('lang/vendor/filament-logger'),
+            __DIR__.'/../resources/lang' => base_path('lang/vendor/filament-logger'),
         ], 'filament-logger-lang');
-
 
         Benchmark::start(config('filament-logger.request.benchmark', 'application'));
 
         $this->app->bind('filament-logger', function () {
-            return new \TomatoPHP\FilamentLogger\Services\LoggerServices();
+            return new LoggerServices;
         });
 
     }

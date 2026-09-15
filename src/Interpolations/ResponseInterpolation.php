@@ -2,18 +2,16 @@
 
 namespace TomatoPHP\FilamentLogger\Interpolations;
 
-use TomatoPHP\FilamentLogger\Services\Benchmark;
+use Exception;
 use Illuminate\Support\Str;
+use RuntimeException;
+use TomatoPHP\FilamentLogger\Services\Benchmark;
 
 /**
  * Class ResponseInterpolation
  */
 class ResponseInterpolation extends BaseInterpolation
 {
-    /**
-     * @param string $text
-     * @return string
-     */
     public function interpolate(string $text): string
     {
         $variables = explode(' ', $text);
@@ -26,14 +24,10 @@ class ResponseInterpolation extends BaseInterpolation
                 $this->logCollection->put($matches[1], $value);
             }
         }
+
         return $text;
     }
 
-    /**
-     * @param string $raw
-     * @param string $variable
-     * @return string
-     */
     protected function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
@@ -71,22 +65,21 @@ class ResponseInterpolation extends BaseInterpolation
                     return $raw;
             }
         }
+
         return $raw;
     }
 
     /**
      * Get length of response
-     *
-     * @return string
      */
     protected function getContentLength(): string
     {
-        $path = storage_path('framework' . DIRECTORY_SEPARATOR . 'temp');
-        if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+        $path = storage_path('framework'.DIRECTORY_SEPARATOR.'temp');
+        if (! file_exists($path) && ! mkdir($path, 0777, true) && ! is_dir($path)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $content = $this->response->getContent();
-        $file = $path . DIRECTORY_SEPARATOR . 'response-' . time();
+        $file = $path.DIRECTORY_SEPARATOR.'response-'.time();
         file_put_contents($file, $content);
         $fileSize = filesize($file);
         if (is_numeric($fileSize)) {
@@ -95,33 +88,30 @@ class ResponseInterpolation extends BaseInterpolation
             $contentLength = $this->formatSizeUnits(0);
         }
         unlink($file);
+
         return $contentLength;
     }
 
     /**
      * Get response time
-     *
-     * @return string|null
      */
     protected function getResponseTime(): ?string
     {
         try {
-            return (string)Benchmark::duration(config('filament-logger.request.benchmark', 'application'));
-        } catch (\Exception $e) {
+            return (string) Benchmark::duration(config('filament-logger.request.benchmark', 'application'));
+        } catch (Exception $e) {
             return null;
         }
     }
 
     /**
      * Get request hash
-     *
-     * @return string|null
      */
     protected function getRequestHash(): ?string
     {
         try {
             return Benchmark::hash(config('filament-logger.request.benchmark', 'application'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

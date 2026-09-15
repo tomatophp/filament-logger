@@ -5,13 +5,13 @@ namespace TomatoPHP\FilamentLogger\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property integer $id
- * @property integer $model_id
+ * @property int $id
+ * @property int $model_id
  * @property string $model_type
  * @property string $request_hash
  * @property string $http_version
  * @property float $response_time
- * @property integer $status
+ * @property int $status
  * @property string $method
  * @property string $url
  * @property string $referer

@@ -2,24 +2,24 @@
 
 namespace TomatoPHP\FilamentLogger\Filament\Resources;
 
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use TomatoPHP\FilamentLogger\Filament\Resources\ActivityResource\Pages;
-use TomatoPHP\FilamentLogger\Filament\Resources\ActivityResource\RelationManagers;
-use TomatoPHP\FilamentLogger\Models\Activity;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use TomatoPHP\FilamentLogger\Filament\Resources\ActivityResource\Pages\ManageActivities;
+use TomatoPHP\FilamentLogger\Models\Activity;
 
 class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-exclamation-triangle';
 
     public static function getNavigationGroup(): ?string
     {
@@ -41,9 +41,9 @@ class ActivityResource extends Resource
         return trans('filament-logger::messages.single');
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make('model.name')
                 ->label(trans('filament-logger::messages.columns.model')),
             TextEntry::make('response_time')
@@ -83,35 +83,35 @@ class ActivityResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->poll(session()->has('activity_poll') ? session('activity_poll') : null)
             ->columns([
-                Tables\Columns\TextColumn::make('method')
+                TextColumn::make('method')
                     ->label(trans('filament-logger::messages.columns.method'))
                     ->icon('heroicon-o-link')
                     ->badge()
-                    ->description(fn($record) => '('.$record->status.') '.str($record->url)->remove(url('/')))
+                    ->description(fn ($record) => '('.$record->status.') '.str($record->url)->remove(url('/')))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('remote_address')
+                TextColumn::make('remote_address')
                     ->label(trans('filament-logger::messages.columns.remote_address'))
-                    ->description(fn($record) => $record->model?->name)
+                    ->description(fn ($record) => $record->model?->name)
                     ->icon('heroicon-o-globe-alt')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('response_time')
+                TextColumn::make('response_time')
                     ->label(trans('filament-logger::messages.columns.response_time'))
                     ->icon('heroicon-o-clock')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(trans('filament-logger::messages.columns.created_at'))
-                    ->description(fn($record) => $record->created_at->diffForHumans())
+                    ->description(fn ($record) => $record->created_at->diffForHumans())
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label(trans('filament-logger::messages.columns.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('method')
+                SelectFilter::make('method')
                     ->label(trans('filament-logger::messages.columns.method'))
                     ->searchable()
                     ->options([
@@ -122,13 +122,13 @@ class ActivityResource extends Resource
                         'DELETE' => 'DELETE',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -136,7 +136,7 @@ class ActivityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageActivities::route('/'),
+            'index' => ManageActivities::route('/'),
         ];
     }
 }

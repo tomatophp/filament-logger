@@ -2,6 +2,7 @@
 
 namespace TomatoPHP\FilamentLogger\Services;
 
+use Exception;
 use RuntimeException;
 
 /**
@@ -9,15 +10,8 @@ use RuntimeException;
  */
 class Benchmark
 {
-    /**
-     * @var array
-     */
     protected static array $timers = [];
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
     public static function start(string $name): mixed
     {
         $start = microtime(true);
@@ -25,13 +19,10 @@ class Benchmark
             'hash' => self::generateRandomHash(),
             'start' => $start,
         ];
+
         return $start;
     }
 
-    /**
-     * @param string $name
-     * @return float
-     */
     public static function end(string $name): float
     {
         $end = microtime(true);
@@ -42,24 +33,17 @@ class Benchmark
             $start = static::$timers[$name]['start'];
             static::$timers[$name]['end'] = $end;
             static::$timers[$name]['duration'] = $end - $start;
+
             return static::$timers[$name]['duration'];
         }
         throw new RuntimeException("Benchmark '{$name}' not started");
     }
 
-    /**
-     * @param string $name
-     * @return float
-     */
     public static function duration(string $name): float
     {
         return static::end($name);
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
     public static function hash(string $name): string
     {
         if (isset(static::$timers[$name]) && isset(static::$timers[$name]['start'])) {
@@ -75,7 +59,7 @@ class Benchmark
     {
         try {
             return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(32))), 0, 10);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return substr(sha1(time()), 0, 10);
         }
     }

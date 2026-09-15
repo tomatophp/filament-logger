@@ -2,8 +2,8 @@
 
 namespace TomatoPHP\FilamentLogger\LogCustomizers;
 
+use Illuminate\Log\Logger;
 use TomatoPHP\FilamentLogger\Formatters\LineWithHashFormatter;
-use \Illuminate\Log\Logger;
 
 /**
  * Class HashLogCustomizer
@@ -12,9 +12,6 @@ class HashLogCustomizer
 {
     /**
      * Customize the given logger instance.
-     *
-     * @param Logger $logger
-     * @return void
      */
     public function __invoke(Logger $logger): void
     {

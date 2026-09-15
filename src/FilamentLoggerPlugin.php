@@ -4,8 +4,6 @@ namespace TomatoPHP\FilamentLogger;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use TomatoPHP\FilamentLogger\Filament\Resources\ActivityResource;
 
 class FilamentLoggerPlugin implements Plugin
@@ -18,7 +16,7 @@ class FilamentLoggerPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->resources([
-            ActivityResource::class
+            ActivityResource::class,
         ]);
     }
 
@@ -29,6 +27,6 @@ class FilamentLoggerPlugin implements Plugin
 
     public static function make(): static
     {
-        return new static();
+        return app(static::class);
     }
 }

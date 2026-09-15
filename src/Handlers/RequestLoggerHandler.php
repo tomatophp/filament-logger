@@ -13,12 +13,12 @@ class RequestLoggerHandler extends RotatingFileHandler
     /**
      * RequestLoggerHandler constructor.
      *
-     * @param null $filename
-     * @param int $maxFiles
-     * @param int $level
-     * @param bool $bubble
-     * @param null $filePermission
-     * @param bool $useLocking
+     * @param  null  $filename
+     * @param  int  $maxFiles
+     * @param  int  $level
+     * @param  bool  $bubble
+     * @param  null  $filePermission
+     * @param  bool  $useLocking
      */
     public function __construct(
         $filename = null,
@@ -28,7 +28,7 @@ class RequestLoggerHandler extends RotatingFileHandler
         $filePermission = null,
         $useLocking = false
     ) {
-        $filename = !is_null($filename) ? $filename : config(
+        $filename = ! is_null($filename) ? $filename : config(
             'filament-logger.request.file',
             storage_path('logs/request.log')
         );

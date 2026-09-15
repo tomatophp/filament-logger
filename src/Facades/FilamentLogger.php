@@ -2,7 +2,6 @@
 
 namespace TomatoPHP\FilamentLogger\Facades;
 
-
 use Illuminate\Support\Facades\Facade;
 
 /**
