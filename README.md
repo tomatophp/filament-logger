@@ -10,8 +10,10 @@ Log all user activity to file or log driver and preview it on your FilamentPHP p
 
 ## Screenshots
 
-![Logger](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/logger.png)
-![View Log](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/view-log.png)
+![Activity Log](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/activities-light.png)
+![Activity Log Dark](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/activities-dark.png)
+![View Activity](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/view-activity-light.png)
+![View Activity Dark](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/view-activity-dark.png)
 ![Log File](https://raw.githubusercontent.com/tomatophp/filament-logger/master/arts/log-file.png)
 
 ## Version Compatibility
@@ -64,6 +66,11 @@ to track your panel
 ```
 
 where `admin` is the id of the panel.
+
+## Upgrading from 1.x
+
+- `TomatoPHP\FilamentLogger\EventServiceProvider` was removed; the package subscribes its request listener itself. If you worked around the duplicate verification emails (#5) with a custom provider or `dont-discover`, remove it.
+- Run `php artisan migrate` after updating.
 
 ## Using
 
