@@ -12,6 +12,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use TomatoPHP\FilamentLogger\Filament\Resources\ActivityResource\Pages\ManageActivities;
 use TomatoPHP\FilamentLogger\Models\Activity;
 
@@ -131,6 +132,11 @@ class ActivityResource extends Resource
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with('model');
     }
 
     public static function getPages(): array

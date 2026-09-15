@@ -21,7 +21,7 @@ class ManageActivities extends ManageRecords
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->action(function () {
-                    Activity::query()->truncate();
+                    Activity::query()->delete();
 
                     Notification::make()
                         ->title(trans('filament-logger::messages.actions.clear.success.title'))

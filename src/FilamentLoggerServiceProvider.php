@@ -2,8 +2,10 @@
 
 namespace TomatoPHP\FilamentLogger;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TomatoPHP\FilamentLogger\Console\FilamentLoggerInstall;
+use TomatoPHP\FilamentLogger\Listeners\RequestLoggerListener;
 use TomatoPHP\FilamentLogger\Services\Benchmark;
 use TomatoPHP\FilamentLogger\Services\LoggerServices;
 
@@ -37,7 +39,7 @@ class FilamentLoggerServiceProvider extends ServiceProvider
 
         // Publish Lang
         $this->publishes([
-            __DIR__.'/../resources/lang' => base_path('lang/vendor/filament-logger'),
+            __DIR__.'/../resources/lang' => lang_path('vendor/filament-logger'),
         ], 'filament-logger-lang');
 
         Benchmark::start(config('filament-logger.request.benchmark', 'application'));
@@ -45,11 +47,14 @@ class FilamentLoggerServiceProvider extends ServiceProvider
         $this->app->bind('filament-logger', function () {
             return new LoggerServices;
         });
-
     }
 
     public function boot(): void
     {
-        $this->app->register(EventServiceProvider::class);
+        /**
+         * Subscribe directly instead of registering a framework EventServiceProvider subclass:
+         * that base class re-registers the email verification listener on every boot (#5).
+         */
+        Event::subscribe(RequestLoggerListener::class);
     }
 }
