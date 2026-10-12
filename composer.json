@@ -2,6 +2,12 @@
     "name": "tomatophp/filament-logger",
     "type": "library",
     "description": "Log all user activity to file or log driver and preview it on your FilamentPHP panel",
+    "homepage": "https://tomatophp.com/en/plugins/filament-logger",
+    "support": {
+        "issues": "https://github.com/tomatophp/filament-logger/issues",
+        "source": "https://github.com/tomatophp/filament-logger",
+        "docs": "https://tomatophp.com/en/plugins/filament-logger"
+    },
     "keywords": [
         "php",
         "laravel",
